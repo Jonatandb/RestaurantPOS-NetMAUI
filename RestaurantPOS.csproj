@@ -70,13 +70,16 @@
 	  <None Remove="Resources\Images\fried_chicken.png" />
 	  <None Remove="Resources\Images\fried_egg.png" />
 	  <None Remove="Resources\Images\fried_rice.png" />
+	  <None Remove="Resources\Images\grid.png" />
 	  <None Remove="Resources\Images\hamburger.png" />
+	  <None Remove="Resources\Images\home.png" />
 	  <None Remove="Resources\Images\hotdog.png" />
 	  <None Remove="Resources\Images\ice_cream.png" />
 	  <None Remove="Resources\Images\idli_platter.png" />
 	  <None Remove="Resources\Images\kebab.png" />
 	  <None Remove="Resources\Images\kimchi_jjiage.png" />
 	  <None Remove="Resources\Images\laddu.png" />
+	  <None Remove="Resources\Images\list.png" />
 	  <None Remove="Resources\Images\lobster.png" />
 	  <None Remove="Resources\Images\mango.png" />
 	  <None Remove="Resources\Images\masala_dosa.png" />
@@ -87,6 +90,7 @@
 	  <None Remove="Resources\Images\pancakes.png" />
 	  <None Remove="Resources\Images\paneer.png" />
 	  <None Remove="Resources\Images\pasta.png" />
+	  <None Remove="Resources\Images\phone.png" />
 	  <None Remove="Resources\Images\pie.png" />
 	  <None Remove="Resources\Images\pizza.png" />
 	  <None Remove="Resources\Images\pizza_slice.png" />
@@ -117,6 +121,22 @@
 		<PackageReference Include="Microsoft.Extensions.Logging.Debug" Version="8.0.0" />
 		<PackageReference Include="sqlite-net-pcl" Version="1.9.172" />
 		<PackageReference Include="SQLitePCLRaw.bundle_green" Version="2.1.9" />
+	</ItemGroup>
+
+	<ItemGroup>
+	  <Folder Include="Controls\" />
+	  <Folder Include="Data\" />
+	  <Folder Include="Models\" />
+	  <Folder Include="ViewModels\" />
+	</ItemGroup>
+
+	<ItemGroup>
+	  <MauiXaml Update="Pages\ManageMenuItemPage.xaml">
+	    <Generator>MSBuild:Compile</Generator>
+	  </MauiXaml>
+	  <MauiXaml Update="Pages\OrdersPage.xaml">
+	    <Generator>MSBuild:Compile</Generator>
+	  </MauiXaml>
 	</ItemGroup>
 
 </Project>

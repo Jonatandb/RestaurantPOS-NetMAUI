@@ -1,4 +1,4 @@
-﻿namespace RestaurantPOS
+﻿namespace RestaurantPOS.Pages
 {
     public partial class MainPage : ContentPage
     {
