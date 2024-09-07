@@ -4,6 +4,7 @@
              x:Class="RestaurantPOS.Pages.MainPage"
              xmlns:vm="clr-namespace:RestaurantPOS.ViewModels"
              xmlns:data="clr-namespace:RestaurantPOS.Data"
+             xmlns:models="clr-namespace:RestaurantPOS.Models"
              x:DataType="vm:HomeViewModel"
              Shell.NavBarIsVisible="False">
 
@@ -17,7 +18,7 @@
                     <LinearItemsLayout Orientation="Horizontal" ItemSpacing="10"/>
                 </CollectionView.ItemsLayout>
                 <CollectionView.ItemTemplate>
-                    <DataTemplate x:DataType="data:MenuCategory">
+                    <DataTemplate x:DataType="models:MenuCategoryModel">
                         <Border Padding="20, 10"
                                 BackgroundColor="{StaticResource LightWeat}"
                                 StrokeShape="RoundRectangle 10"
@@ -30,8 +31,30 @@
                                        VerticalOptions="Center"/>
                                 <Label Text="{Binding Name}"
                                        VerticalOptions="Center"
-                                       TextColor="Maroon"/>
-                            </HorizontalStackLayout>    
+                                       TextColor="Maroon">
+                                    <Label.Triggers>
+                                        <DataTrigger 
+                                            Binding="{Binding IsSelected}"
+                                            TargetType="Label"
+                                            Value="True">
+                                            <Setter Property="TextColor" Value="White"/>
+                                        </DataTrigger>
+                                    </Label.Triggers>
+                                </Label>
+                            </HorizontalStackLayout>
+                            <Border.Triggers>
+                                <DataTrigger 
+                                    Binding="{Binding IsSelected}"
+                                    TargetType="Border"
+                                    Value="True">
+                                    <Setter Property="BackgroundColor" Value="Maroon"/>
+                                </DataTrigger>
+                            </Border.Triggers>
+                            <Border.GestureRecognizers>
+                                <TapGestureRecognizer 
+                                    Command="{Binding Source={x:RelativeSource AncestorType={x:Type vm:HomeViewModel}}, Path=SelectCategoryCommand}" 
+                                    CommandParameter="{Binding Id}" />
+                            </Border.GestureRecognizers>
                         </Border>
                     </DataTemplate>
                 </CollectionView.ItemTemplate>

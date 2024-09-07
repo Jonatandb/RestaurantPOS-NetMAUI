@@ -1,5 +1,7 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
+using CommunityToolkit.Mvvm.Input;
 using RestaurantPOS.Data;
+using RestaurantPOS.Models;
 
 namespace RestaurantPOS.ViewModels
 {
@@ -8,7 +10,10 @@ namespace RestaurantPOS.ViewModels
         private readonly DatabaseService _databaseService;
 
         [ObservableProperty]
-        public MenuCategory[] _categories = [];
+        private MenuCategoryModel[] _categories = [];
+
+        [ObservableProperty]
+        private MenuCategoryModel? _selectedCategory = null;
 
         [ObservableProperty]
         private bool _isLoading;
@@ -22,7 +27,7 @@ namespace RestaurantPOS.ViewModels
 
         public async ValueTask InitializeAsync()
         {
-            if(_isInitialized)
+            if (_isInitialized)
             {
                 return;
             }
@@ -31,9 +36,29 @@ namespace RestaurantPOS.ViewModels
 
             IsLoading = true;
 
-            Categories = await _databaseService.GetMenuCategoriesAsync();
+            Categories = (await _databaseService.GetMenuCategoriesAsync())
+                            .Select(MenuCategoryModel.FromEntity)
+                            .ToArray();
+
+            Categories[0].IsSelected = true;
+            SelectedCategory = Categories[0];
 
             IsLoading = false;
+        }
+
+        [RelayCommand]
+        private void SelectCategory(int categoryId)
+        {
+            if (SelectedCategory?.Id == categoryId)
+                return; // Already selected
+
+            var currentSelectedCategory = Categories.First(c => c.IsSelected);
+            currentSelectedCategory.IsSelected = false;
+
+            var newSelectedCategory = Categories.First(c => c.Id == categoryId);
+            newSelectedCategory.IsSelected = true;
+
+            SelectedCategory = newSelectedCategory;
         }
     }
 }
