@@ -1,25 +1,23 @@
-﻿namespace RestaurantPOS.Pages
+﻿using RestaurantPOS.ViewModels;
+
+namespace RestaurantPOS.Pages
 {
     public partial class MainPage : ContentPage
     {
-        int count = 0;
+        private readonly HomeViewModel _homeViewModel;
 
-        public MainPage()
+        public MainPage(HomeViewModel homeViewModel)
         {
             InitializeComponent();
+            _homeViewModel = homeViewModel;
+
+            BindingContext = _homeViewModel;
+            Initialize();
         }
 
-        private void OnCounterClicked(object sender, EventArgs e)
+        private async void Initialize()
         {
-            count++;
-
-            if (count == 1)
-                CounterBtn.Text = $"Clicked {count} time";
-            else
-                CounterBtn.Text = $"Clicked {count} times";
-
-            SemanticScreenReader.Announce(CounterBtn.Text);
+            await _homeViewModel.InitializeAsync();
         }
     }
-
 }
