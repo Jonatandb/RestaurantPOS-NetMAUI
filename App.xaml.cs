@@ -4,7 +4,6 @@ namespace RestaurantPOS
 {
     public partial class App : Application
     {
-        private readonly DatabaseService _databaseService;
 
         public App(DatabaseService databaseService)
         {
@@ -12,17 +11,10 @@ namespace RestaurantPOS
 
             MainPage = new AppShell();
 
-            _databaseService = databaseService;
-
+            Task.Run(async () => await databaseService.InitializeDatabase())
+                .GetAwaiter()
+                .GetResult();
         }
 
-        protected override async void OnStart()
-        {
-            base.OnStart();
-
-            // Initialize and seed the database
-            await _databaseService.InitializeDatabase();
-
-        }
     }
 }
