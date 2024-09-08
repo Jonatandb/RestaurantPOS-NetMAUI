@@ -3,7 +3,7 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="RestaurantPOS.Controls.CurrentDateTimeControl">
     <VerticalStackLayout>
-        <Label Text="DAY_TIME" FontSize="16" x:Name="dayTimeLabel" TextColor="Black"/>
-        <Label Text="DATE" FontSize="16" x:Name="dateLabel" TextColor="Black"/>
+        <Label Text="" FontSize="16" x:Name="dayTimeLabel" TextColor="Black"/>
+        <Label Text="" FontSize="16" x:Name="dateLabel" TextColor="Black"/>
     </VerticalStackLayout>
 </ContentView>
