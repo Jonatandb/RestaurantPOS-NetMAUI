@@ -9,11 +9,17 @@
              Shell.NavBarIsVisible="False">
 
     <Grid ColumnDefinitions=".75*, .25*">
+        
         <Grid Grid.Column="0"
-              RowDefinitions="Auto, Auto, *" RowSpacing="10">
-            <Label Grid.Row="0" Text="Hello, Jonatandb!"/>
+              RowDefinitions="Auto, Auto, *" 
+              RowSpacing="15"
+              Padding="15"
+        >
+            
+            <Label Grid.Row="0" Text="Hello, Jonatandb!"
+                  FontSize="22" FontAttributes="Bold" />
 
-            <CollectionView ItemsSource="{Binding Categories}" Grid.Row="1">
+            <CollectionView Grid.Row="1" ItemsSource="{Binding Categories}">
                 <CollectionView.ItemsLayout>
                     <LinearItemsLayout Orientation="Horizontal" ItemSpacing="10"/>
                 </CollectionView.ItemsLayout>
@@ -26,12 +32,12 @@
                         >
                             <HorizontalStackLayout Spacing="5">
                                 <Image HeightRequest="20"
-                                       WidthRequest="20"
-                                       Source="{Binding Icon}"
-                                       VerticalOptions="Center"/>
+                                        WidthRequest="20"
+                                        Source="{Binding Icon}"
+                                        VerticalOptions="Center"/>
                                 <Label Text="{Binding Name}"
-                                       VerticalOptions="Center"
-                                       TextColor="Maroon">
+                                        VerticalOptions="Center"
+                                        TextColor="Maroon">
                                     <Label.Triggers>
                                         <DataTrigger 
                                             Binding="{Binding IsSelected}"
@@ -59,12 +65,79 @@
                     </DataTemplate>
                 </CollectionView.ItemTemplate>
             </CollectionView>
+                
+            <Grid Grid.Row="2">
+                <CollectionView ItemsSource="{Binding MenuItems}" >
+                    <CollectionView.ItemsLayout>
+                        <GridItemsLayout 
+                            HorizontalItemSpacing="10"
+                            VerticalItemSpacing="10"
+                            Orientation="Vertical"
+                            Span="4"
+                        />
+                    </CollectionView.ItemsLayout>
+                    <CollectionView.ItemTemplate>
+                        <DataTemplate x:DataType="data:MenuItem">
+                            <Border Padding="10" StrokeShape="RoundRectangle 10" Stroke="#DDD">
+                                <VerticalStackLayout Spacing="10">
+                                    <Border 
+                                        BackgroundColor="{StaticResource LightWeat}" 
+                                        HeightRequest="150"
+                                        StrokeThickness="0"
+                                    >
+                                        <Image 
+                                            Source="{Binding Icon}"
+                                            MaximumHeightRequest="150"
+                                            WidthRequest="250"
+                                            HorizontalOptions="Center"
+                                            VerticalOptions="Center"
+                                            BackgroundColor="{StaticResource LightWeat}"
+                                            Aspect="Center"
+                                        />
+                                    </Border>
+                                    <Label Text="{Binding Name}" FontAttributes="Bold" FontSize="20"/>
+                                    <Label Text="{Binding Description}" FontSize="12" TextColor="Gray"/>
+                                    <FlexLayout JustifyContent="SpaceBetween">
+                                        <Label Text="{Binding Price, StringFormat='{0:C}'}"
+                                               FontSize="25"
+                                               FontAttributes="Bold"
+                                               TextColor="Maroon"
+                                               VerticalOptions="Center"/>
+                                        <ImageButton Source="shopping_bag.png"
+                                                     BackgroundColor="{StaticResource LightWeat}"
+                                                     CornerRadius="8"
+                                                     HeightRequest="25"
+                                                     WidthRequest="25"/>
+                                    </FlexLayout>
+                                </VerticalStackLayout>
+                            </Border>
+                        </DataTemplate>
+                    </CollectionView.ItemTemplate>
+                </CollectionView>
+                
+                <BoxView 
+                    HorizontalOptions="Fill"
+                    VerticalOptions="Fill"
+                    IsVisible="{Binding IsLoading}"
+                    Opacity="0.5"
+                    Color="{StaticResource LightWeat}"
+                />
+                
+                <ActivityIndicator 
+                    HorizontalOptions="Center"
+                    VerticalOptions="Center"
+                    HeightRequest="25"
+                    WidthRequest="25"
+                    IsRunning="{Binding IsLoading}"
+                    Color="Maroon"
+                />
+            </Grid>
             
-            <Label Grid.Row="2" Text="Menu Items List"/>
         </Grid>
         
         <Grid Grid.Column="1" BackgroundColor="{StaticResource LightWeat}">
-            <Label Text="Current Order Items"/>
+            <Label Text="Current Order Items" TextColor="Black"/>
         </Grid>
+        
     </Grid>
 </ContentPage>
