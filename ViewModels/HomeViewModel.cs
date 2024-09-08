@@ -2,6 +2,7 @@
 using CommunityToolkit.Mvvm.Input;
 using RestaurantPOS.Data;
 using RestaurantPOS.Models;
+using System.Collections.ObjectModel;
 using MenuItem = RestaurantPOS.Data.MenuItem;
 
 namespace RestaurantPOS.ViewModels
@@ -18,6 +19,8 @@ namespace RestaurantPOS.ViewModels
 
         [ObservableProperty]
         private MenuCategoryModel? _selectedCategory = null;
+
+        public ObservableCollection<CartModel> CartItems { get; set; } = new();
 
         [ObservableProperty]
         private bool _isLoading;
@@ -73,5 +76,41 @@ namespace RestaurantPOS.ViewModels
             IsLoading = false;
         }
 
+        [RelayCommand]
+        private void AddToCart(MenuItem menuItem)
+        {
+            var cartItem = CartItems.FirstOrDefault(c => c.ItemId == menuItem.Id);
+            if(cartItem == null)
+            {
+                cartItem = new CartModel()
+                {
+                    ItemId = menuItem.Id,
+                    Name = menuItem.Name,
+                    Price = menuItem.Price,
+                    Icon = menuItem.Icon,
+                    Quantity = 1
+                };
+                CartItems.Add(cartItem);
+            } else
+            {
+                cartItem.Quantity++;
+            }
+        }
+
+        [RelayCommand]
+        private void IncreaseQuantity(CartModel cartItem) => cartItem.Quantity++;
+
+        [RelayCommand]
+        private void DecreaseQuantity(CartModel cartItem)
+        {
+            cartItem.Quantity--;
+            if (cartItem.Quantity == 0)
+            {
+                CartItems.Remove(cartItem);
+            }
+        }
+
+        [RelayCommand]
+        private void RemoveItemFromCart(CartModel cartItem) => CartItems.Remove(cartItem);
     }
 }

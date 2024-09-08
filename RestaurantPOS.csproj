@@ -111,6 +111,7 @@
 	  <None Remove="Resources\Images\thai_food.png" />
 	  <None Remove="Resources\Images\thali.png" />
 	  <None Remove="Resources\Images\wrap.png" />
+	  <None Remove="Resources\Images\x.png" />
 	</ItemGroup>
 
 	<ItemGroup>
