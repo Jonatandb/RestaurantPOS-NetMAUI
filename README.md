@@ -1,3 +1,3 @@
 # Restaurant POS Desktop App with .Net 8 MAUI + SQLite
 
-![App Screenshot](Screenshot.png)
+![Restaurtant POS Preview](RestaurtantPOS_Preview.gif)
