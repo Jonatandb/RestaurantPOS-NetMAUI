@@ -154,7 +154,7 @@
 
         <Grid
             Grid.Column="1"
-            Padding="10"
+            Padding="0,10"
             BackgroundColor="{StaticResource LightWeat}"
             RowDefinitions="Auto, *, Auto">
             <VerticalStackLayout Grid.Row="0" Spacing="5">
@@ -268,8 +268,112 @@
                 </CollectionView>
             </Grid>
 
-            <VerticalStackLayout Grid.Row="2">
-                <!--  subtotal, tax, amount, buttons  -->
+            <VerticalStackLayout Grid.Row="2" Padding="15,10,15,0">
+                <Border
+                    Padding="10"
+                    BackgroundColor="White"
+                    StrokeShape="RoundRectangle 10"
+                    StrokeThickness="0">
+                    <Border.Shadow>
+                        <Shadow Brush="Maroon" Radius="15" />
+                    </Border.Shadow>
+
+                    <Grid
+                        ColumnDefinitions="2*, 3*"
+                        RowDefinitions="Auto, Auto, Auto, Auto, Auto, Auto"
+                        RowSpacing="8">
+                        <Label
+                            Grid.Row="0"
+                            Grid.Column="0"
+                            Text="Subtotal"
+                            TextColor="Black" />
+                        <Label
+                            Grid.Row="0"
+                            Grid.Column="1"
+                            HorizontalOptions="Center"
+                            Text="{Binding Subtotal, StringFormat='{0:C}'}"
+                            TextColor="Black" />
+                        <HorizontalStackLayout
+                            Grid.Row="1"
+                            Grid.Column="0"
+                            Spacing="5">
+                            <Label
+                                Text="Tax"
+                                TextColor="Black"
+                                VerticalOptions="Center" />
+                            <Label
+                                Padding="5,0"
+                                BackgroundColor="Wheat"
+                                Text="{Binding TaxPrecentage, StringFormat='{0}%'}"
+                                TextColor="Black"
+                                VerticalOptions="Center">
+                                <Label.GestureRecognizers>
+                                    <TapGestureRecognizer Command="{Binding TaxPercentageClickCommand}" />
+                                </Label.GestureRecognizers>
+                            </Label>
+                        </HorizontalStackLayout>
+                        <Label
+                            Grid.Row="1"
+                            Grid.Column="1"
+                            HorizontalOptions="Center"
+                            Text="{Binding TaxAmount, StringFormat='{0:C}'}"
+                            TextColor="Black" />
+                        <Border
+                            Grid.Row="2"
+                            Grid.ColumnSpan="2"
+                            Stroke="Maroon"
+                            StrokeDashArray="20,5"
+                            StrokeThickness="0.5" />
+                        <Label
+                            Grid.Row="3"
+                            Grid.Column="0"
+                            FontAttributes="Bold"
+                            Text="Total"
+                            TextColor="Black" />
+                        <Label
+                            Grid.Row="3"
+                            Grid.Column="1"
+                            FontAttributes="Bold"
+                            HorizontalOptions="Center"
+                            Text="{Binding Total, StringFormat='{0:C}'}"
+                            TextColor="Black" />
+                        <Border
+                            Grid.Row="4"
+                            Grid.ColumnSpan="2"
+                            Stroke="Maroon"
+                            StrokeDashArray="20,5"
+                            StrokeThickness="0.5" />
+                        <Grid
+                            Grid.Row="5"
+                            Grid.ColumnSpan="2"
+                            ColumnDefinitions="Auto, *, Auto, Auto"
+                            ColumnSpacing="5">
+                            <Button
+                                Grid.Column="0"
+                                BackgroundColor="Red"
+                                Command="{Binding ClearCartCommand}"
+                                MinimumHeightRequest="25"
+                                MinimumWidthRequest="25"
+                                Text="X"
+                                TextColor="White"
+                                ToolTipProperties.Text="Clear Current Order" />
+                            <Button
+                                Grid.Column="2"
+                                BackgroundColor="DarkOliveGreen"
+                                MinimumHeightRequest="25"
+                                MinimumWidthRequest="25"
+                                Text="Paid Cash"
+                                TextColor="White" />
+                            <Button
+                                Grid.Column="3"
+                                BackgroundColor="BlueViolet"
+                                MinimumHeightRequest="25"
+                                MinimumWidthRequest="25"
+                                Text="Paid Online"
+                                TextColor="White" />
+                        </Grid>
+                    </Grid>
+                </Border>
             </VerticalStackLayout>
         </Grid>
 

@@ -25,9 +25,21 @@ namespace RestaurantPOS.ViewModels
         [ObservableProperty]
         private bool _isLoading;
 
+        [ObservableProperty, NotifyPropertyChangedFor(nameof(TaxAmount)), NotifyPropertyChangedFor(nameof(Total))]
+        private decimal _subtotal;
+
+        [ObservableProperty, NotifyPropertyChangedFor(nameof(TaxAmount)), NotifyPropertyChangedFor(nameof(Total))]
+        private int _taxPrecentage;
+
+        public decimal TaxAmount => (Subtotal * TaxPrecentage) / 100;
+
+        public decimal Total => Subtotal + TaxAmount;
+
+
         public HomeViewModel(DatabaseService databaseService)
         {
             _databaseService = databaseService;
+            CartItems.CollectionChanged += (sender, args) => RecalculateAmounts();
         }
 
         private bool _isInitialized;
@@ -80,7 +92,7 @@ namespace RestaurantPOS.ViewModels
         private void AddToCart(MenuItem menuItem)
         {
             var cartItem = CartItems.FirstOrDefault(c => c.ItemId == menuItem.Id);
-            if(cartItem == null)
+            if (cartItem == null)
             {
                 cartItem = new CartModel()
                 {
@@ -91,14 +103,20 @@ namespace RestaurantPOS.ViewModels
                     Quantity = 1
                 };
                 CartItems.Add(cartItem);
-            } else
+            }
+            else
             {
                 cartItem.Quantity++;
+                RecalculateAmounts();
             }
         }
 
         [RelayCommand]
-        private void IncreaseQuantity(CartModel cartItem) => cartItem.Quantity++;
+        private void IncreaseQuantity(CartModel cartItem)
+        {
+            cartItem.Quantity++;
+            RecalculateAmounts();
+        }
 
         [RelayCommand]
         private void DecreaseQuantity(CartModel cartItem)
@@ -108,9 +126,49 @@ namespace RestaurantPOS.ViewModels
             {
                 CartItems.Remove(cartItem);
             }
+            else
+            {
+                RecalculateAmounts();
+            }
         }
 
         [RelayCommand]
         private void RemoveItemFromCart(CartModel cartItem) => CartItems.Remove(cartItem);
+
+        private void RecalculateAmounts() => Subtotal = CartItems.Sum(i => i.Amount);
+
+        [RelayCommand]
+        private async Task TaxPercentageClickAsync()
+        {
+            var result = await Shell.Current.DisplayPromptAsync("Tax Percentage", "Enter tax percentage", placeholder: "10", initialValue: TaxPrecentage.ToString());
+            if (!string.IsNullOrWhiteSpace(result))
+            {
+                if (!int.TryParse(result, out int enteredTaxPercentage))
+                {
+                    await Shell.Current.DisplayAlert("Invalid value", "Please enter a valid number", "OK");
+                    return;
+                }
+
+                if (enteredTaxPercentage > 100 || enteredTaxPercentage < 0)
+                {
+                    await Shell.Current.DisplayAlert("Invalid value", "Tax percentage must be between 0 and 100", "OK");
+                    return;
+                }
+
+                TaxPrecentage = enteredTaxPercentage;
+            }
+        }
+
+        [RelayCommand]
+        private async Task ClearCartAsync()
+        {
+            if (CartItems.Count > 0)
+            {
+                if (await Shell.Current.DisplayAlert("Clear Order", "Are you sure you want to clear the order?", "Yes", "No"))
+                {
+                    CartItems.Clear();
+                }
+            }
+        }
     }
 }
