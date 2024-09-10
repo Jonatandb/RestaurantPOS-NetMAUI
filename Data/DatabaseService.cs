@@ -101,5 +101,8 @@ namespace RestaurantPOS.Data
             model.Id = newOrder.Id;
             return null;
         }
+    
+        public async Task<Order[]>  GetOrdersAsync() => await _connection.Table<Order>().ToArrayAsync();
+
     }
 }
