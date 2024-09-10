@@ -29,7 +29,7 @@
         <Grid
             Grid.Column="0"
             Padding="15"
-            RowDefinitions="Auto, Auto, *"
+            RowDefinitions="Auto, *"
             RowSpacing="15">
 
             <Label
@@ -64,6 +64,9 @@
                             Text="No. of Items" />
                     </Grid>
                     <CollectionView Grid.Row="1" ItemsSource="{Binding Orders}">
+                        <CollectionView.ItemsLayout>
+                            <LinearItemsLayout Orientation="Vertical" />
+                        </CollectionView.ItemsLayout>
                         <CollectionView.ItemTemplate>
                             <DataTemplate x:DataType="models:OrderModel">
                                 <Grid ColumnDefinitions="90, *, *, *, *,*" RowDefinitions="2, Auto, Auto, 2">
