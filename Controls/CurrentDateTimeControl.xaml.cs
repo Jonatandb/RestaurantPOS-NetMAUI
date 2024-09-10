@@ -20,8 +20,8 @@ public partial class CurrentDateTimeControl : ContentView
         string formattedTime = $"{now:dddd, HH:mm:ss}";
         dayTimeLabel.Text = char.ToUpper(formattedTime[0]) + formattedTime.Substring(1);
 
-        string formattedDate = $"{now:dd 'de' MMMM 'del' yyyy}";
-        formattedDate = formattedDate.Substring(0, 6) + char.ToUpper(formattedDate[6]) + formattedDate.Substring(7);
+        string formattedDate = $"{now:dd MMMM yyyy}";
+        formattedDate = formattedDate.Substring(0, 3) + char.ToUpper(formattedDate[3]) + formattedDate.Substring(4);
         dateLabel.Text = formattedDate;
     }
 
