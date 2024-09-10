@@ -21,12 +21,13 @@ namespace RestaurantPOS
                 });
 
 #if DEBUG
-    		builder.Logging.AddDebug();
+            builder.Logging.AddDebug();
 #endif
 
-            builder.Services.AddSingleton<DatabaseService>();
-            builder.Services.AddSingleton<HomeViewModel>();
-            builder.Services.AddSingleton<MainPage>();
+            builder.Services.AddSingleton<DatabaseService>()
+                .AddSingleton<HomeViewModel>()
+                .AddSingleton<MainPage>()
+                .AddSingleton<OrdersViewModel>();
 
             return builder.Build();
         }

@@ -10,7 +10,7 @@ namespace RestaurantPOS.ViewModels
     public partial class HomeViewModel : ObservableObject
     {
         private readonly DatabaseService _databaseService;
-
+        private readonly OrdersViewModel _ordersViewModel;
         [ObservableProperty]
         private MenuCategoryModel[] _categories = [];
 
@@ -36,9 +36,10 @@ namespace RestaurantPOS.ViewModels
         public decimal Total => Subtotal + TaxAmount;
 
 
-        public HomeViewModel(DatabaseService databaseService)
+        public HomeViewModel(DatabaseService databaseService, OrdersViewModel ordersViewModel)
         {
             _databaseService = databaseService;
+            _ordersViewModel = ordersViewModel;
             CartItems.CollectionChanged += (sender, args) => RecalculateAmounts();
         }
 
@@ -168,6 +169,25 @@ namespace RestaurantPOS.ViewModels
                 {
                     CartItems.Clear();
                 }
+            }
+        }
+
+        [RelayCommand]
+        private async Task PlaceOrderAsync(bool isPaidCash)
+        {
+            if (CartItems.Count == 0)
+            {
+                return;
+            }
+
+            if (await Shell.Current.DisplayAlert("Close Order", "Are you sure you want to close the order?", "Yes", "No"))
+            {
+                IsLoading = true;
+                if (await _ordersViewModel.CreateOderAsync([.. CartItems], isPaidCash))
+                {
+                    CartItems.Clear();
+                }
+                IsLoading = false;
             }
         }
     }

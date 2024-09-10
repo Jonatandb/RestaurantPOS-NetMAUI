@@ -360,17 +360,27 @@
                             <Button
                                 Grid.Column="2"
                                 BackgroundColor="DarkOliveGreen"
+                                Command="{Binding PlaceOrderCommand}"
                                 MinimumHeightRequest="25"
                                 MinimumWidthRequest="25"
                                 Text="Paid Cash"
-                                TextColor="White" />
+                                TextColor="White">
+                                <Button.CommandParameter>
+                                    <x:Boolean>true</x:Boolean>
+                                </Button.CommandParameter>
+                            </Button>
                             <Button
                                 Grid.Column="3"
                                 BackgroundColor="BlueViolet"
+                                Command="{Binding PlaceOrderCommand}"
                                 MinimumHeightRequest="25"
                                 MinimumWidthRequest="25"
                                 Text="Paid Online"
-                                TextColor="White" />
+                                TextColor="White">
+                                <Button.CommandParameter>
+                                    <x:Boolean>false</x:Boolean>
+                                </Button.CommandParameter>
+                            </Button>
                         </Grid>
                     </Grid>
                 </Border>

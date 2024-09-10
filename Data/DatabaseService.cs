@@ -1,4 +1,5 @@
-﻿using SQLite;
+﻿using RestaurantPOS.Models;
+using SQLite;
 
 namespace RestaurantPOS.Data
 {
@@ -64,6 +65,41 @@ namespace RestaurantPOS.Data
             var menuItems = await _connection.QueryAsync<MenuItem>(query, categoryId);
 
             return [.. menuItems];
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="model"></param>
+        /// <returns>String with error message if any. Null if no error.</returns>
+        public async Task<string?> PlaceOrderAsync(OrderModel model)
+        {
+            var newOrder = new Order
+            {
+                OrderDate = model.OrderDate,
+                PaymentMode = model.PaymentMode,
+                TotalAmountPaid = model.TotalAmountPaid,
+                TotalItemsCount = model.TotalItemsCount
+            };
+
+            if (await _connection.InsertAsync(newOrder) > 0)
+            {
+                foreach (var item in model.Items)
+                {
+                    item.OrderId = newOrder.Id;
+                }
+                if (await _connection.InsertAllAsync(model.Items) == 0)
+                {
+                    await _connection.DeleteAsync(newOrder);
+                    return "Error inserting order items";
+                }
+            }
+            else
+            {
+                return "Error inserting order";
+            }
+            model.Id = newOrder.Id;
+            return null;
         }
     }
 }
