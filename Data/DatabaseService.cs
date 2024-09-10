@@ -101,8 +101,13 @@ namespace RestaurantPOS.Data
             model.Id = newOrder.Id;
             return null;
         }
-    
-        public async Task<Order[]>  GetOrdersAsync() => await _connection.Table<Order>().ToArrayAsync();
+
+        public async Task<Order[]> GetOrdersAsync() => await _connection.Table<Order>().ToArrayAsync();
+
+        public async Task<OrderItem[]> GetOrderItemsByOrderIdAsync(int orderId) => await _connection
+            .Table<OrderItem>()
+            .Where(oi => oi.OrderId == orderId)
+            .ToArrayAsync();
 
     }
 }
