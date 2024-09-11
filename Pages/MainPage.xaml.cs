@@ -9,15 +9,22 @@ namespace RestaurantPOS.Pages
         public MainPage(HomeViewModel homeViewModel)
         {
             InitializeComponent();
+
             _homeViewModel = homeViewModel;
 
             BindingContext = _homeViewModel;
+
             Initialize();
         }
 
         private async void Initialize()
         {
             await _homeViewModel.InitializeAsync();
+        }
+
+        private async void OnCategorySelected(Models.MenuCategoryModel category)
+        {
+            await _homeViewModel.SelectCategoryCommand.ExecuteAsync(category.Id);
         }
     }
 }

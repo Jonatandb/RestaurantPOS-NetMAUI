@@ -24,52 +24,10 @@
                 FontSize="22"
                 Text="Hello, Jonatandb!" />
 
-            <CollectionView Grid.Row="1" ItemsSource="{Binding Categories}">
-                <CollectionView.ItemsLayout>
-                    <LinearItemsLayout ItemSpacing="10" Orientation="Horizontal" />
-                </CollectionView.ItemsLayout>
-                <CollectionView.ItemTemplate>
-                    <DataTemplate x:DataType="models:MenuCategoryModel">
-                        <Border
-                            Padding="20,10"
-                            BackgroundColor="{StaticResource LightWeat}"
-                            StrokeShape="RoundRectangle 10"
-                            StrokeThickness="0">
-                            <HorizontalStackLayout Spacing="5">
-                                <Image
-                                    HeightRequest="20"
-                                    Source="{Binding Icon}"
-                                    VerticalOptions="Center"
-                                    WidthRequest="20" />
-                                <Label
-                                    Text="{Binding Name}"
-                                    TextColor="Maroon"
-                                    VerticalOptions="Center">
-                                    <Label.Triggers>
-                                        <DataTrigger
-                                            Binding="{Binding IsSelected}"
-                                            TargetType="Label"
-                                            Value="True">
-                                            <Setter Property="TextColor" Value="White" />
-                                        </DataTrigger>
-                                    </Label.Triggers>
-                                </Label>
-                            </HorizontalStackLayout>
-                            <Border.Triggers>
-                                <DataTrigger
-                                    Binding="{Binding IsSelected}"
-                                    TargetType="Border"
-                                    Value="True">
-                                    <Setter Property="BackgroundColor" Value="Maroon" />
-                                </DataTrigger>
-                            </Border.Triggers>
-                            <Border.GestureRecognizers>
-                                <TapGestureRecognizer Command="{Binding Source={x:RelativeSource AncestorType={x:Type vm:HomeViewModel}}, Path=SelectCategoryCommand}" CommandParameter="{Binding Id}" />
-                            </Border.GestureRecognizers>
-                        </Border>
-                    </DataTemplate>
-                </CollectionView.ItemTemplate>
-            </CollectionView>
+            <controls:CategoriesListControl
+                Grid.Row="1"
+                Categories="{Binding Categories}"
+                OnCategorySelected="OnCategorySelected" />
 
             <Grid Grid.Row="2">
                 <CollectionView ItemsSource="{Binding MenuItems}">

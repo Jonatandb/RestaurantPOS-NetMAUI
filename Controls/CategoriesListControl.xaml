@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentView
+    x:Class="RestaurantPOS.Controls.CategoriesListControl"
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:controls="clr-namespace:RestaurantPOS.Controls"
+    xmlns:data="clr-namespace:RestaurantPOS.Data"
+    xmlns:models="clr-namespace:RestaurantPOS.Models"
+    xmlns:vm="clr-namespace:RestaurantPOS.ViewModels"
+    x:Name="this">
+
+    <CollectionView
+        Grid.Row="1"
+        BindingContext="{x:Reference this}"
+        ItemsSource="{Binding Categories}">
+        <CollectionView.ItemsLayout>
+            <LinearItemsLayout ItemSpacing="10" Orientation="Horizontal" />
+        </CollectionView.ItemsLayout>
+        <CollectionView.ItemTemplate>
+            <DataTemplate x:DataType="models:MenuCategoryModel">
+                <Border
+                    Padding="20,10"
+                    BackgroundColor="{StaticResource LightWeat}"
+                    StrokeShape="RoundRectangle 10"
+                    StrokeThickness="0">
+                    <HorizontalStackLayout Spacing="5">
+                        <Image
+                            HeightRequest="20"
+                            Source="{Binding Icon}"
+                            VerticalOptions="Center"
+                            WidthRequest="20" />
+                        <Label
+                            Text="{Binding Name}"
+                            TextColor="Maroon"
+                            VerticalOptions="Center">
+                            <Label.Triggers>
+                                <DataTrigger
+                                    Binding="{Binding IsSelected}"
+                                    TargetType="Label"
+                                    Value="True">
+                                    <Setter Property="TextColor" Value="White" />
+                                </DataTrigger>
+                            </Label.Triggers>
+                        </Label>
+                    </HorizontalStackLayout>
+                    <Border.Triggers>
+                        <DataTrigger
+                            Binding="{Binding IsSelected}"
+                            TargetType="Border"
+                            Value="True">
+                            <Setter Property="BackgroundColor" Value="Maroon" />
+                        </DataTrigger>
+                    </Border.Triggers>
+                    <Border.GestureRecognizers>
+                        <TapGestureRecognizer Command="{Binding Source={x:RelativeSource AncestorType={x:Type controls:CategoriesListControl}}, Path=SelectCategoryCommand}" CommandParameter="{Binding .}" />
+                    </Border.GestureRecognizers>
+                </Border>
+            </DataTemplate>
+        </CollectionView.ItemTemplate>
+    </CollectionView>
+
+</ContentView>
