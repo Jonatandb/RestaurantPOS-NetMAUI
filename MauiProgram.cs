@@ -24,11 +24,14 @@ namespace RestaurantPOS
             builder.Logging.AddDebug();
 #endif
 
-            builder.Services.AddSingleton<DatabaseService>()
+            builder.Services
+                .AddSingleton<DatabaseService>()
                 .AddSingleton<HomeViewModel>()
                 .AddSingleton<MainPage>()
                 .AddSingleton<OrdersViewModel>()
-                .AddScoped<OrdersPage>();
+                .AddSingleton<OrdersPage>()
+                .AddTransient<ManageMenuItemsViewModel>()
+                .AddTransient<ManageMenuItemPage>();
 
             return builder.Build();
         }
