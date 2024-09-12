@@ -4,15 +4,10 @@
     xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
     xmlns:controls="clr-namespace:RestaurantPOS.Controls"
-    xmlns:data="clr-namespace:RestaurantPOS.Data"
     xmlns:models="clr-namespace:RestaurantPOS.Models"
-    xmlns:vm="clr-namespace:RestaurantPOS.ViewModels"
     x:Name="this">
 
-    <CollectionView
-        Grid.Row="1"
-        BindingContext="{x:Reference this}"
-        ItemsSource="{Binding Categories}">
+    <CollectionView BindingContext="{x:Reference this}" ItemsSource="{Binding Categories}">
         <CollectionView.ItemsLayout>
             <LinearItemsLayout ItemSpacing="10" Orientation="Horizontal" />
         </CollectionView.ItemsLayout>
