@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentView
+    x:Class="RestaurantPOS.Controls.MenuItemsListControl"
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:controls="clr-namespace:RestaurantPOS.Controls"
+    xmlns:data="clr-namespace:RestaurantPOS.Data"
+    x:Name="this">
+
+
+    <CollectionView BindingContext="{x:Reference this}" ItemsSource="{Binding Items}">
+        <CollectionView.ItemsLayout>
+            <GridItemsLayout
+                HorizontalItemSpacing="10"
+                Orientation="Vertical"
+                Span="4"
+                VerticalItemSpacing="10" />
+        </CollectionView.ItemsLayout>
+        <CollectionView.ItemTemplate>
+            <DataTemplate x:DataType="data:MenuItem">
+                <Border
+                    Padding="10"
+                    Stroke="#DDD"
+                    StrokeShape="RoundRectangle 10">
+                    <VerticalStackLayout Spacing="10">
+                        <Border
+                            BackgroundColor="{StaticResource LightWeat}"
+                            HeightRequest="150"
+                            StrokeThickness="0">
+                            <Image
+                                Aspect="Center"
+                                BackgroundColor="{StaticResource LightWeat}"
+                                HorizontalOptions="Center"
+                                MaximumHeightRequest="150"
+                                Source="{Binding Icon}"
+                                VerticalOptions="Center"
+                                WidthRequest="250" />
+                        </Border>
+                        <Label
+                            FontAttributes="Bold"
+                            FontSize="20"
+                            Text="{Binding Name}" />
+                        <Label
+                            FontSize="12"
+                            Text="{Binding Description}"
+                            TextColor="Gray" />
+                        <FlexLayout JustifyContent="SpaceBetween">
+                            <Label
+                                FontAttributes="Bold"
+                                FontSize="25"
+                                Text="{Binding Price, StringFormat='{0:C}'}"
+                                TextColor="Maroon"
+                                VerticalOptions="Center" />
+                            <ImageButton
+                                BackgroundColor="{StaticResource LightWeat}"
+                                Command="{Binding Source={x:RelativeSource AncestorType={x:Type controls:MenuItemsListControl}}, Path=ItemSelectedCommand}"
+                                CommandParameter="{Binding .}"
+                                CornerRadius="8"
+                                HeightRequest="25"
+                                Source="shopping_bag.png"
+                                ToolTipProperties.Text="Add to current order"
+                                WidthRequest="25" />
+                        </FlexLayout>
+                    </VerticalStackLayout>
+                    <Border.GestureRecognizers>
+                        <TapGestureRecognizer Command="{Binding Source={x:RelativeSource AncestorType={x:Type controls:MenuItemsListControl}}, Path=ItemSelectedCommand}" CommandParameter="{Binding .}" />
+                    </Border.GestureRecognizers>
+                </Border>
+            </DataTemplate>
+        </CollectionView.ItemTemplate>
+    </CollectionView>
+
+</ContentView>

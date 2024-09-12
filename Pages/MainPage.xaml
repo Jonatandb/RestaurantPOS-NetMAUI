@@ -30,67 +30,8 @@
                 OnCategorySelected="OnCategorySelected" />
 
             <Grid Grid.Row="2">
-                <CollectionView ItemsSource="{Binding MenuItems}">
-                    <CollectionView.ItemsLayout>
-                        <GridItemsLayout
-                            HorizontalItemSpacing="10"
-                            Orientation="Vertical"
-                            Span="4"
-                            VerticalItemSpacing="10" />
-                    </CollectionView.ItemsLayout>
-                    <CollectionView.ItemTemplate>
-                        <DataTemplate x:DataType="data:MenuItem">
-                            <Border
-                                Padding="10"
-                                Stroke="#DDD"
-                                StrokeShape="RoundRectangle 10">
-                                <VerticalStackLayout Spacing="10">
-                                    <Border
-                                        BackgroundColor="{StaticResource LightWeat}"
-                                        HeightRequest="150"
-                                        StrokeThickness="0">
-                                        <Image
-                                            Aspect="Center"
-                                            BackgroundColor="{StaticResource LightWeat}"
-                                            HorizontalOptions="Center"
-                                            MaximumHeightRequest="150"
-                                            Source="{Binding Icon}"
-                                            VerticalOptions="Center"
-                                            WidthRequest="250" />
-                                    </Border>
-                                    <Label
-                                        FontAttributes="Bold"
-                                        FontSize="20"
-                                        Text="{Binding Name}" />
-                                    <Label
-                                        FontSize="12"
-                                        Text="{Binding Description}"
-                                        TextColor="Gray" />
-                                    <FlexLayout JustifyContent="SpaceBetween">
-                                        <Label
-                                            FontAttributes="Bold"
-                                            FontSize="25"
-                                            Text="{Binding Price, StringFormat='{0:C}'}"
-                                            TextColor="Maroon"
-                                            VerticalOptions="Center" />
-                                        <ImageButton
-                                            BackgroundColor="{StaticResource LightWeat}"
-                                            Command="{Binding Source={x:RelativeSource AncestorType={x:Type vm:HomeViewModel}}, Path=AddToCartCommand}"
-                                            CommandParameter="{Binding .}"
-                                            CornerRadius="8"
-                                            HeightRequest="25"
-                                            Source="shopping_bag.png"
-                                            ToolTipProperties.Text="Add to current order"
-                                            WidthRequest="25" />
-                                    </FlexLayout>
-                                </VerticalStackLayout>
-                                <Border.GestureRecognizers>
-                                    <TapGestureRecognizer Command="{Binding Source={x:RelativeSource AncestorType={x:Type vm:HomeViewModel}}, Path=AddToCartCommand}" CommandParameter="{Binding .}" />
-                                </Border.GestureRecognizers>
-                            </Border>
-                        </DataTemplate>
-                    </CollectionView.ItemTemplate>
-                </CollectionView>
+
+                <controls:MenuItemsListControl Items="{Binding MenuItems}" OnItemSelected="OnItemSelected" />
 
                 <BoxView
                     HorizontalOptions="Fill"
