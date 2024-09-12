@@ -57,7 +57,7 @@
                                 CommandParameter="{Binding .}"
                                 CornerRadius="8"
                                 HeightRequest="25"
-                                Source="shopping_bag.png"
+                                Source="{Binding Source={x:Reference this}, Path=ActionIcon}"
                                 ToolTipProperties.Text="Add to current order"
                                 WidthRequest="25" />
                         </FlexLayout>
