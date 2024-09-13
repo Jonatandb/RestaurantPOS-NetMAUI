@@ -1,0 +1,141 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentView
+    x:Class="RestaurantPOS.Controls.SaveMenuItemFormControl"
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:controls="clr-namespace:RestaurantPOS.Controls"
+    xmlns:models="clr-namespace:RestaurantPOS.Models"
+    x:Name="this">
+
+    <ContentView.Resources>
+        <ResourceDictionary>
+            <Style x:Key="txt" TargetType="Entry">
+                <Setter Property="BackgroundColor" Value="Wheat" />
+                <Setter Property="PlaceholderColor" Value="Black" />
+            </Style>
+            <Style x:Key="lbl" TargetType="Label">
+                <Setter Property="FontSize" Value="16" />
+                <Setter Property="TextColor" Value="Black" />
+            </Style>
+        </ResourceDictionary>
+    </ContentView.Resources>
+
+    <ScrollView BindingContext="{x:Reference this}">
+        <VerticalStackLayout Spacing="10">
+            <VerticalStackLayout Spacing="2">
+                <Label Style="{StaticResource lbl}" Text="Name" />
+                <Entry
+                    Placeholder="Enter name"
+                    PlaceholderColor="Black"
+                    Style="{StaticResource txt}"
+                    Text="{Binding Item.Name}"
+                    TextColor="Black" />
+            </VerticalStackLayout>
+            <VerticalStackLayout Spacing="2">
+                <Label Style="{StaticResource lbl}" Text="Image/Icon" />
+                <Border
+                    BackgroundColor="Wheat"
+                    HeightRequest="100"
+                    HorizontalOptions="Center"
+                    StrokeThickness="0"
+                    VerticalOptions="Center"
+                    WidthRequest="100">
+                    <Image
+                        x:Name="itemIcon"
+                        Aspect="AspectFit"
+                        HeightRequest="36"
+                        HorizontalOptions="Center"
+                        Source="image_add_regular_36.png"
+                        VerticalOptions="Center"
+                        WidthRequest="36" />
+                </Border>
+                <Button
+                    Margin="0,5,0,0"
+                    Clicked="PickImageButton_Clicked"
+                    HorizontalOptions="Center"
+                    MinimumHeightRequest="30"
+                    Text="Pick Image"
+                    TextColor="White" />
+            </VerticalStackLayout>
+            <VerticalStackLayout Spacing="2">
+                <Label Style="{StaticResource lbl}" Text="Description" />
+                <Editor
+                    MinimumHeightRequest="100"
+                    Placeholder="Enter description"
+                    Style="{StaticResource txt}"
+                    Text="{Binding Item.Description}"
+                    TextColor="Black" />
+            </VerticalStackLayout>
+            <VerticalStackLayout Spacing="2">
+                <Label Style="{StaticResource lbl}" Text="Price" />
+                <Entry
+                    Placeholder="Enter price"
+                    Style="{StaticResource txt}"
+                    Text="{Binding Item.Price}"
+                    TextColor="Black" />
+            </VerticalStackLayout>
+            <VerticalStackLayout Spacing="2">
+                <Label Style="{StaticResource lbl}" Text="Categories" />
+                <CollectionView ItemsSource="{Binding Item.Categories}">
+                    <CollectionView.ItemsLayout>
+                        <GridItemsLayout
+                            HorizontalItemSpacing="3"
+                            Orientation="Vertical"
+                            Span="3"
+                            VerticalItemSpacing="3" />
+                    </CollectionView.ItemsLayout>
+                    <CollectionView.ItemTemplate>
+                        <DataTemplate x:DataType="models:MenuCategoryModel">
+                            <Border
+                                BackgroundColor="Wheat"
+                                HeightRequest="40"
+                                StrokeShape="RoundRectangle 10">
+                                <Label
+                                    HorizontalOptions="Center"
+                                    Text="{Binding Name}"
+                                    TextColor="Black"
+                                    VerticalOptions="Center">
+                                    <Label.Triggers>
+                                        <DataTrigger
+                                            Binding="{Binding IsSelected}"
+                                            TargetType="Label"
+                                            Value="True">
+                                            <Setter Property="TextColor" Value="White" />
+                                        </DataTrigger>
+                                    </Label.Triggers>
+                                </Label>
+                                <Border.Triggers>
+                                    <DataTrigger
+                                        Binding="{Binding IsSelected}"
+                                        TargetType="Border"
+                                        Value="True">
+                                        <Setter Property="BackgroundColor" Value="Maroon" />
+                                    </DataTrigger>
+                                </Border.Triggers>
+                                <Border.GestureRecognizers>
+                                    <TapGestureRecognizer Command="{Binding Source={x:RelativeSource AncestorType={x:Type controls:SaveMenuItemFormControl}}, Path=ToggleCategorySelectionCommand}" CommandParameter="{Binding .}" />
+                                </Border.GestureRecognizers>
+                            </Border>
+                        </DataTemplate>
+                    </CollectionView.ItemTemplate>
+                </CollectionView>
+            </VerticalStackLayout>
+            <Grid ColumnDefinitions="*,*">
+                <Button
+                    Grid.Column="0"
+                    BackgroundColor="red"
+                    Command="{Binding CancelCommand}"
+                    HorizontalOptions="Start"
+                    Text="Cancel"
+                    TextColor="White" />
+
+                <Button
+                    Grid.Column="1"
+                    BackgroundColor="DarkOliveGreen"
+                    Command="{Binding SaveMenuItemCommand}"
+                    Text="Save"
+                    TextColor="White" />
+            </Grid>
+        </VerticalStackLayout>
+    </ScrollView>
+</ContentView>

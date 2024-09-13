@@ -73,8 +73,13 @@
             <Grid
                 Grid.Row="1"
                 Padding="10"
-                BackgroundColor="Wheat">
-                <!--  Save menu item form  -->
+                BackgroundColor="{StaticResource LightWeat}">
+
+                <controls:SaveMenuItemFormControl
+                    Item="{Binding MenuItem}"
+                    OnCancel="SaveMenuItemFormControl_OnCancel"
+                    OnSaveItem="SaveMenuItemFormControl_OnSaveItem" />
+
             </Grid>
 
 

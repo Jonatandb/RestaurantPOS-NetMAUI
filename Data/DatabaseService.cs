@@ -109,5 +109,93 @@ namespace RestaurantPOS.Data
             .Where(oi => oi.OrderId == orderId)
             .ToArrayAsync();
 
+        public async Task<MenuCategory[]> GetCategoriesByMenuItemIdAsync(int menuItemId)
+        {
+            var query = @"
+                        SELECT cat.* 
+                        FROM MenuCategory cat
+                        INNER JOIN MenuItemCategoryMapping mcm
+                        ON cat.Id = mcm.CategoryId
+                        WHERE mcm.MenuItemId = ?
+                    ";
+            var categories = await _connection.QueryAsync<MenuCategory>(query, menuItemId);
+            return [.. categories];
+        }
+
+        public async Task<string?> SaveMenuItemAsync(MenuItemModel model)
+        {
+            if (model.Id == 0)
+            {
+                MenuItem menuItem = new()
+                {
+                    Id = model.Id,
+                    Name = model.Name,
+                    Icon = model.Icon,
+                    Description = model.Description,
+                    Price = model.Price
+                };
+
+                if (await _connection.InsertAsync(menuItem) > 0)
+                {
+                    var categoryMapping = model.SelectedCategories
+                                                .Select(c => new MenuItemCategoryMapping
+                                                {
+                                                    Id = c.Id,
+                                                    CategoryId = c.Id,
+                                                    MenuItemId = menuItem.Id
+                                                });
+                    if (await _connection.InsertAllAsync(categoryMapping) > 0)
+                    {
+                        model.Id = menuItem.Id;
+                        return null;
+                    }
+                    else
+                    {
+                        await _connection.DeleteAsync(menuItem);
+                    }
+                }
+                return "Error saving menu item";
+            }
+            else
+            {
+                string? errorMessage = null;
+
+                await _connection.RunInTransactionAsync(db =>
+                {
+                    var menuItem = db.Find<MenuItem>(model.Id);
+
+                    menuItem.Name = model.Name;
+                    menuItem.Icon = model.Icon;
+                    menuItem.Description = model.Description;
+                    menuItem.Price = model.Price;
+
+                    if (db.Update(menuItem) == 0)
+                    {
+                        errorMessage = "Error updating menu item";
+                        throw new Exception();
+                    }
+
+                    var deleteQuery = @"
+                        DELETE FROM MenuItemCategoryMapping 
+                        WHERE MenuItemId = ?";
+                    db.Execute(deleteQuery, menuItem.Id);
+
+                    var categoryMapping = model.SelectedCategories
+                            .Select(c => new MenuItemCategoryMapping
+                            {
+                                Id = c.Id,
+                                CategoryId = c.Id,
+                                MenuItemId = menuItem.Id
+                            });
+                    if (db.InsertAll(categoryMapping) == 0)
+                    {
+                        errorMessage = "Error updating menu item categories";
+                        throw new Exception();
+                    }
+                });
+
+                return errorMessage;
+            }
+        }
     }
 }

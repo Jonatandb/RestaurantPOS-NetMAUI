@@ -23,4 +23,14 @@ public partial class ManageMenuItemPage : ContentPage
     private async void OnCategorySelected(Models.MenuCategoryModel category) => await _manageMenuItemViewModel.SelectCategoryCommand.ExecuteAsync(category.Id);
 
     private async void OnItemSelected(MenuItem menuItem) => await _manageMenuItemViewModel.EditMenuItemCommand.ExecuteAsync(menuItem);
+
+    private void SaveMenuItemFormControl_OnCancel()
+    {
+        _manageMenuItemViewModel.CancelCommand.Execute(null);
+    }
+
+    private async void SaveMenuItemFormControl_OnSaveItem(Models.MenuItemModel menuItemModel)
+    {
+        await _manageMenuItemViewModel.SaveMenuItemCommand.ExecuteAsync(menuItemModel);
+    }
 }

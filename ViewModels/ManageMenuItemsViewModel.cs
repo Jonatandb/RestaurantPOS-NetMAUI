@@ -1,4 +1,5 @@
-﻿using CommunityToolkit.Mvvm.ComponentModel;
+﻿using CommunityToolkit.Maui.Alerts;
+using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using RestaurantPOS.Data;
 using RestaurantPOS.Models;
@@ -27,6 +28,9 @@ namespace RestaurantPOS.ViewModels
         [ObservableProperty]
         private bool _isLoading;
 
+        [ObservableProperty]
+        private MenuItemModel _menuItem = new();
+
         private bool _isInitialized;
 
         public async ValueTask InitializeAsync()
@@ -48,6 +52,8 @@ namespace RestaurantPOS.ViewModels
             SelectedCategory = Categories[0];
 
             MenuItems = await _databaseService.GetMenuItemsByCategoryIdAsync(SelectedCategory.Id);
+
+            SetEmptyCategoriesToItem();
 
             IsLoading = false;
         }
@@ -76,7 +82,77 @@ namespace RestaurantPOS.ViewModels
         [RelayCommand]
         private async Task EditMenuItemAsync(MenuItem menuItem)
         {
-            await Shell.Current.DisplayAlert("Edit", "Edit menu item", "OK");
+            var menuItemModel = new MenuItemModel
+            {
+                Id = menuItem.Id,
+                Name = menuItem.Name,
+                Description = menuItem.Description,
+                Price = menuItem.Price,
+                Icon = menuItem.Icon
+            };
+
+            var itemCategories = await _databaseService.GetCategoriesByMenuItemIdAsync(menuItem.Id);
+
+            foreach (var category in Categories)
+            {
+                var categoryOfItem = new MenuCategoryModel
+                {
+                    Icon = category.Icon,
+                    Id = category.Id,
+                    Name = category.Name
+                };
+                if (itemCategories.Any(c => c.Id == category.Id))
+                {
+                    categoryOfItem.IsSelected = true;
+                }
+                else
+                {
+                    categoryOfItem.IsSelected = false;
+                }
+                menuItemModel.Categories.Add(categoryOfItem);
+            }
+            MenuItem = menuItemModel;
+        }
+
+        private void SetEmptyCategoriesToItem()
+        {
+            MenuItem.Categories.Clear();
+            foreach (var category in Categories)
+            {
+                var categoryOfItem = new MenuCategoryModel
+                {
+                    Id = category.Id,
+                    Icon = category.Icon,
+                    Name = category.Name,
+                    IsSelected = false
+                };
+                MenuItem.Categories.Add(categoryOfItem);
+            }
+        }
+
+        [RelayCommand]
+        private void Cancel()
+        {
+            MenuItem = new();
+            SetEmptyCategoriesToItem();
+        }
+
+        [RelayCommand]
+        private async Task SaveMenuItemAsync(MenuItemModel model)
+        {
+            IsLoading = true;
+
+            var errorMessage = await _databaseService.SaveMenuItemAsync(model);
+            if (errorMessage != null)
+            {
+                await Shell.Current.DisplayAlert("Error", errorMessage, "OK");
+            }
+            else
+            {
+                await Toast.Make("Menu item saved successfully").Show();
+                Cancel();
+            }
+            IsLoading = false;
         }
     }
 }
