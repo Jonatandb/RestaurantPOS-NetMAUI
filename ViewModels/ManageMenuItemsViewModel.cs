@@ -1,6 +1,7 @@
 ﻿using CommunityToolkit.Maui.Alerts;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
+using CommunityToolkit.Mvvm.Messaging;
 using RestaurantPOS.Data;
 using RestaurantPOS.Models;
 using MenuItem = RestaurantPOS.Data.MenuItem;
@@ -150,9 +151,45 @@ namespace RestaurantPOS.ViewModels
             else
             {
                 await Toast.Make("Menu item saved successfully").Show();
+                HandleMenuItemChanged(model);
+                WeakReferenceMessenger.Default.Send(MenuItemChangedMessage.From(model));
                 Cancel();
             }
             IsLoading = false;
+        }
+
+        private void HandleMenuItemChanged(MenuItemModel model)
+        {
+            var menuItem = MenuItems.FirstOrDefault(m => m.Id == model.Id);
+            if (menuItem != null)
+            {
+
+                if (!model.SelectedCategories.Any(c => c.Id == SelectedCategory.Id))
+                {
+                    MenuItems = [.. MenuItems.Where(m => m.Id != model.Id)];
+                    return;
+                }
+
+                menuItem.Name = model.Name;
+                menuItem.Price = model.Price;
+                menuItem.Description = model.Description;
+                menuItem.Icon = model.Icon;
+
+                MenuItems = [.. MenuItems];
+            }
+            else if (model.SelectedCategories.Any(c => c.Id == SelectedCategory.Id))
+            {
+                var newMenuItem = new MenuItem
+                {
+                    Id = model.Id,
+                    Name = model.Name,
+                    Price = model.Price,
+                    Description = model.Description,
+                    Icon = model.Icon
+                };
+
+                MenuItems = [.. MenuItems, newMenuItem];
+            }
         }
     }
 }
