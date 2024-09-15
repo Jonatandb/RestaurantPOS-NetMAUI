@@ -12,6 +12,7 @@ namespace RestaurantPOS.ViewModels
     {
         private readonly DatabaseService _databaseService;
         private readonly OrdersViewModel _ordersViewModel;
+        private readonly SettingsViewModel _settingsViewModel;
 
         [ObservableProperty]
         private MenuCategoryModel[] _categories = [];
@@ -40,14 +41,18 @@ namespace RestaurantPOS.ViewModels
         [ObservableProperty]
         private string _name = "Guest";
 
-        public HomeViewModel(DatabaseService databaseService, OrdersViewModel ordersViewModel)
+        public HomeViewModel(DatabaseService databaseService, OrdersViewModel ordersViewModel, SettingsViewModel settingsViewModel)
         {
             _databaseService = databaseService;
             _ordersViewModel = ordersViewModel;
+            _settingsViewModel = settingsViewModel;
+
             CartItems.CollectionChanged += (sender, args) => RecalculateAmounts();
 
             WeakReferenceMessenger.Default.Register<MenuItemChangedMessage>(this);
             WeakReferenceMessenger.Default.Register<NameChangedMessage>(this, (reciepent, message) => Name = message.Value);
+
+            TaxPrecentage = _settingsViewModel.GetTaxPercentage();
         }
 
         private bool _isInitialized;
@@ -164,6 +169,8 @@ namespace RestaurantPOS.ViewModels
                 }
 
                 TaxPrecentage = enteredTaxPercentage;
+
+                _settingsViewModel.SetTaxPercentage(enteredTaxPercentage);
             }
         }
 

@@ -6,6 +6,7 @@ namespace RestaurantPOS.ViewModels
     public class SettingsViewModel
     {
         private const string NameKey = "name";
+        private const string TaxPercentageKey = "tax";
 
         private bool _isInitialized;
 
@@ -29,5 +30,10 @@ namespace RestaurantPOS.ViewModels
 
             WeakReferenceMessenger.Default.Send(NameChangedMessage.From(name));
         }
+
+        public int GetTaxPercentage() => Preferences.Default.Get<int>(TaxPercentageKey, 0);
+
+        public void SetTaxPercentage(int taxPercentage) => Preferences.Default.Set<int>(TaxPercentageKey, taxPercentage);
+
     }
 }
