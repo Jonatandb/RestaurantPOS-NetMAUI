@@ -102,7 +102,7 @@ namespace RestaurantPOS.Data
             return null;
         }
 
-        public async Task<Order[]> GetOrdersAsync() => await _connection.Table<Order>().ToArrayAsync();
+        public async Task<Order[]> GetOrdersAsync() => await _connection.Table<Order>().OrderByDescending(o => o.OrderDate).ToArrayAsync();
 
         public async Task<OrderItem[]> GetOrderItemsByOrderIdAsync(int orderId) => await _connection
             .Table<OrderItem>()
