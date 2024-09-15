@@ -63,6 +63,8 @@ namespace RestaurantPOS.ViewModels
 
             IsLoading = true;
 
+            Orders.Clear();
+
             var dbOrders = await _databaseService.GetOrdersAsync();
 
             var orders = dbOrders.Select(o => new OrderModel
