@@ -22,7 +22,7 @@
                 Grid.Row="0"
                 FontAttributes="Bold"
                 FontSize="22"
-                Text="Hello, Jonatandb!" />
+                Text="{Binding Name, StringFormat='Hello, {0}!'}" />
 
             <controls:CategoriesListControl
                 Grid.Row="1"

@@ -37,6 +37,8 @@ namespace RestaurantPOS.ViewModels
 
         public decimal Total => Subtotal + TaxAmount;
 
+        [ObservableProperty]
+        private string _name = "Guest";
 
         public HomeViewModel(DatabaseService databaseService, OrdersViewModel ordersViewModel)
         {
@@ -45,6 +47,7 @@ namespace RestaurantPOS.ViewModels
             CartItems.CollectionChanged += (sender, args) => RecalculateAmounts();
 
             WeakReferenceMessenger.Default.Register<MenuItemChangedMessage>(this);
+            WeakReferenceMessenger.Default.Register<NameChangedMessage>(this, (reciepent, message) => Name = message.Value);
         }
 
         private bool _isInitialized;
@@ -230,7 +233,8 @@ namespace RestaurantPOS.ViewModels
             }
 
             var cartItem = CartItems.FirstOrDefault(i => i.ItemId == model.Id);
-            if (cartItem != null) {
+            if (cartItem != null)
+            {
 
                 cartItem.Name = model.Name;
                 cartItem.Price = model.Price;
