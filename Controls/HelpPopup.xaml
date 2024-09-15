@@ -1,0 +1,123 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<toolkit:Popup
+    x:Class="RestaurantPOS.Controls.HelpPopup"
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:controls="clr-namespace:RestaurantPOS.Controls"
+    xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
+    x:Name="this"
+    CanBeDismissedByTappingOutsideOfPopup="False">
+
+    <Border BackgroundColor="Wheat" StrokeShape="RoundRectangle 10">
+        <Border.Shadow>
+            <Shadow Brush="Maroon" Radius="15" />
+        </Border.Shadow>
+
+        <VerticalStackLayout>
+
+            <!--  Need help header bar  -->
+            <Grid
+                Padding="15,8"
+                BackgroundColor="Maroon"
+                ColumnDefinitions="*, Auto">
+                <Label
+                    Grid.Column="0"
+                    FontSize="18"
+                    Text="Need help?"
+                    TextColor="White" />
+                <Label
+                    Grid.Column="1"
+                    BackgroundColor="Red"
+                    FontAttributes="Bold"
+                    FontSize="18"
+                    HeightRequest="25"
+                    HorizontalTextAlignment="Center"
+                    Text="X"
+                    TextColor="White"
+                    VerticalTextAlignment="Center"
+                    WidthRequest="25">
+                    <Label.GestureRecognizers>
+                        <TapGestureRecognizer Tapped="CloseLabel_Tapped" />
+                    </Label.GestureRecognizers>
+                </Label>
+            </Grid>
+
+
+            <VerticalStackLayout Padding="15" Spacing="10">
+                <!--  Envelope icon header  -->
+                <Image
+                    HeightRequest="25"
+                    HorizontalOptions="Center"
+                    Source="envelope.png"
+                    WidthRequest="25" />
+                <!--  Title  -->
+                <Label
+                    FontSize="16"
+                    HorizontalOptions="Center"
+                    Text="You can connect with me!"
+                    TextColor="Black" />
+
+                <!--  Email address  -->
+                <HorizontalStackLayout Spacing="5">
+                    <Label
+                        FontSize="16"
+                        Text="Email me at "
+                        TextColor="Black"
+                        VerticalOptions="Center" />
+                    <Label
+                        FontAttributes="Bold"
+                        FontSize="16"
+                        Text="{x:Static controls:HelpPopup.Email}"
+                        TextColor="Black"
+                        TextDecorations="Underline"
+                        ToolTipProperties.Text="Click to send me an email"
+                        VerticalOptions="Center">
+                        <Label.GestureRecognizers>
+                            <TapGestureRecognizer Tapped="TapGestureRecognizer_Tapped" />
+                        </Label.GestureRecognizers>
+                    </Label>
+                    <Image
+                        x:Name="CopyEmailImage"
+                        HeightRequest="20"
+                        HorizontalOptions="Center"
+                        Source="copy.png"
+                        ToolTipProperties.Text="Copy to clipboard"
+                        WidthRequest="20">
+                        <Image.GestureRecognizers>
+                            <TapGestureRecognizer Tapped="CopyEmail_Tapped" />
+                        </Image.GestureRecognizers>
+                    </Image>
+                </HorizontalStackLayout>
+            </VerticalStackLayout>
+
+            <!--  Footer  -->
+            <Grid
+                Padding="15,5"
+                BackgroundColor="Maroon"
+                ColumnDefinitions="Auto, *"
+                ColumnSpacing="5">
+                <Label
+                    Grid.Column="0"
+                    FontSize="14"
+                    HorizontalOptions="Center"
+                    Text="Developed by:"
+                    TextColor="White"
+                    VerticalOptions="Center" />
+                <Label
+                    Grid.Column="1"
+                    FontAttributes="Bold"
+                    FontSize="15"
+                    HorizontalOptions="Start"
+                    Text="Jonatandb"
+                    TextColor="Yellow"
+                    TextDecorations="Underline"
+                    ToolTipProperties.Text="Click to visit my website"
+                    VerticalOptions="Center" />
+                <Grid.GestureRecognizers>
+                    <TapGestureRecognizer Tapped="Footer_Tapped" />
+                </Grid.GestureRecognizers>
+            </Grid>
+
+        </VerticalStackLayout>
+    </Border>
+</toolkit:Popup>

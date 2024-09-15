@@ -5,36 +5,41 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
     xmlns:local="clr-namespace:RestaurantPOS"
     xmlns:pages="clr-namespace:RestaurantPOS.Pages"
-    Shell.FlyoutBehavior="Locked"
+    Title="Restaurant POS"
     Shell.FlyoutBackgroundColor="Wheat"
-    Shell.FlyoutWidth="60"
-    Title="Restaurant POS">
+    Shell.FlyoutBehavior="Locked"
+    Shell.FlyoutWidth="60">
 
     <ShellContent
         Title="Home"
-        Icon="home.png"
         ContentTemplate="{DataTemplate pages:MainPage}"
+        Icon="home.png"
         Route="MainPage" />
 
     <ShellContent
         Title="Orders"
-        Icon="list.png"
         ContentTemplate="{DataTemplate pages:OrdersPage}"
+        Icon="list.png"
         Route="OrdersPage" />
- 
+
     <ShellContent
         Title="Manage Menu"
-        Icon="grid.png"
         ContentTemplate="{DataTemplate pages:ManageMenuItemPage}"
+        Icon="grid.png"
         Route="ManageMenuItemPage" />
 
     <Shell.FlyoutFooter>
-        <Image Source="phone.png" 
-               HeightRequest="20" 
-               WidthRequest="20" 
-               Margin="0,0,0,25"
-               HorizontalOptions="Center"
-               Aspect="AspectFit"
-        />
+        <Image
+            Margin="0,0,0,25"
+            Aspect="AspectFit"
+            HeightRequest="20"
+            HorizontalOptions="Center"
+            Source="envelope.png"
+            ToolTipProperties.Text="Support"
+            WidthRequest="20">
+            <Image.GestureRecognizers>
+                <TapGestureRecognizer Tapped="TapGestureRecognizer_Tapped" />
+            </Image.GestureRecognizers>
+        </Image>
     </Shell.FlyoutFooter>
 </Shell>

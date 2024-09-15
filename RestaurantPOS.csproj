@@ -90,7 +90,6 @@
 	  <None Remove="Resources\Images\pancakes.png" />
 	  <None Remove="Resources\Images\paneer.png" />
 	  <None Remove="Resources\Images\pasta.png" />
-	  <None Remove="Resources\Images\phone.png" />
 	  <None Remove="Resources\Images\pie.png" />
 	  <None Remove="Resources\Images\pizza.png" />
 	  <None Remove="Resources\Images\pizza_slice.png" />
@@ -129,6 +128,9 @@
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>
 	  <MauiXaml Update="Controls\CurrentDateTimeControl.xaml">
+	    <Generator>MSBuild:Compile</Generator>
+	  </MauiXaml>
+	  <MauiXaml Update="Controls\HelpPopup.xaml">
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>
 	  <MauiXaml Update="Controls\MenuItemsListControl.xaml">
